@@ -1,0 +1,105 @@
+// 1. Suzdavame promenlivi
+let myX = 0,
+    myY = 0,
+    carX = 80,
+    carY = 60,
+    monkeX = 800,
+    monkeY = randomInteger(550),
+    cloudX = 900,
+    cloudY = randomInteger(301),
+    Lives = 5,
+    repairX = 350,
+    repairY = 250,
+    start = true,
+    ballX = 350,
+    ballY = 250;
+
+function update() {
+    // 2. Kodut tuk se izpulnqva 100 puti v sekunda
+    // carX = carX + (mouseX - carX) / 10;
+    carY = carY + (mouseY - carY) / 10;
+    monkeX = monkeX - 2;
+    if (monkeX <= 0) {
+        monkeX = 800,
+            monkeY = randomInteger(550);
+    }
+    cloudX = cloudX - 3;
+    if (cloudX <= 0) {
+        cloudX = 900,
+            cloudY = randomInteger(301);
+    }
+    if (areColliding(carX, carY, 200, 60, monkeX, monkeY, 50, 30)) {
+        console.log("You sucker");
+        Lives = Lives - 1;
+        monkeX = 800;
+        monkeY = randomInteger(550);
+
+    }
+    if (areColliding(carX, carY, 200, 60, cloudX, cloudY, 60, 40)) {
+        console.log("You sucker");
+        Lives = Lives - 1;
+        cloudX = 900;
+        cloudY = randomInteger(301);
+    }
+    if (Lives <= 0) {
+        Lives = 0;
+    }
+
+
+
+}
+
+function draw() {
+    // 3. Tuk naprogramirai kakvo da se risuva
+
+    drawImage(backCactus, 0, 0, 800, 600);
+    drawImage(carBody, carX, carY, 200, 60);
+    drawImage(cat, monkeX, monkeY, 50, 30);
+    drawImage(cloud, cloudX, cloudY, 60, 40);
+    if (Lives == 0) {
+        drawImage(backSpikes, 0, 0, 800, 600);
+        console.log("GAME OVER");
+        drawImage(repair, repairX, repairY, 80, 80);
+
+
+    }
+    if (start) {
+        drawImage(backDesert, 0, 0, 800, 600);
+        drawImage(ballOrTree, ballX, ballY, 100, 100);
+
+    }
+
+
+}
+
+
+function keyup(key) {
+    // Pechatai koda na natisnatiq klavish
+    console.log("Pressed", key);
+
+}
+
+function mouseup() {
+    // Pri klik - pokaji koordinatite na mishkata 
+    console.log("Mouse clicked at", mouseX, mouseY);
+    if (mouseX > repairX) {
+        if (mouseX <= repairX + 80) {
+            if (mouseY > repairY) {
+                if (mouseY <= repairY + 80) {
+                    location.reload();
+                }
+            }
+        }
+    }
+
+    if (mouseX > ballX) {
+        if (mouseX <= ballX + 100) {
+            if (mouseY > ballY) {
+                if (mouseY <= ballY + 100) {
+                    start = false;
+                }
+            }
+        }
+    }
+
+}
